@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Head section... -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Materi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    .navbar {
+            background-color: #007BFF; /* Warna latar belakang navbar */
+            transition: background-color 0.3s; /* Efek transisi pada latar belakang navbar */
+        }
+
+        .navbar .navbar-brand {
+            color: white; /* Warna teks navbar */
+            font-weight: bold;
+        }
+
+        .navbar .navbar-nav .nav-link {
+            color: white; /* Warna teks pada nav link */
+            transition: color 0.3s; /* Efek transisi warna teks pada nav link */
+        }
+
+        .navbar .navbar-nav .nav-link:hover {
+            color: #F8F9FA; /* Warna teks pada nav link saat dihover */
+        }
+
+        .navbar .navbar-toggler-icon {
+            background-color: white; /* Warna ikon tombol navbar */
+            transition: transform 0.2s; /* Efek transisi pada ikon tombol navbar */
+        }
+
+        .navbar .navbar-toggler:hover .navbar-toggler-icon {
+            transform: scale(1.2); /* Efek zoom out saat kursor dihover */
+        }
+</style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light ">
+        <div class="container">
+            <a class="navbar-brand" href="#">Pusat Pembelajaran</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="kategori.html">Kategori</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="managemateri.html">Manage Materi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<!-- Navbar section... -->
+
+<div class="container mt-4">
+    <h2 class="mb-4">Edit Materi</h2>
+    <a href="managemateri.html" class="btn btn-primary">Kembali</a>
+    <form id="editMateriForm">
+        <div class="form-group">
+            <label for="judul">Judul Materi</label>
+            <input type="text" class="form-control" id="judul" name="judul" required>
+        </div>
+        <div class="form-group">
+            <label for="kategori">Kategori</label>
+            <select class="form-control" id="kategori" name="kategori" required>
+                <option value="Impor">Impor</option>
+                <option value="Ekspor">Ekspor</option>
+                <option value="Cukai">Cukai</option>
+                <option value="IMEI">IMEI</option>
+                <option value="Lainnya">Lainnya</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="tahun">Tanggal Upload</label>
+            <input type="date" class="form-control" id="tahun" name="tahun" required>
+        </div>
+        <div class="form-group">
+            <label for="file">File Materi</label>
+            <input type="file" class="form-control-file" id="file" name="file" accept=".jpg, .jpeg, .png, .mp4, .pdf, .ppt, .pptx">
+        </div>
+        <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        const editMateriForm = $("#editMateriForm");
+        const materiId = parseInt(getUrlParameter("id")); // Ambil parameter ID dari URL
+
+        // Ambil data materi dari Local Storage berdasarkan ID
+        const materiData = getDataFromLocalStorage(materiId);
+
+        if (materiData) {
+            $("#judul").val(materiData.judul);
+            $("#kategori").val(materiData.kategori);
+            $("#tahun").val(materiData.tahun);
+        }
+
+        editMateriForm.submit(function(event) {
+            event.preventDefault();
+            const judul = $("#judul").val();
+            const kategori = $("#kategori").val();
+            const tahun = $("#tahun").val();
+
+            // Ubah data di Local Storage
+            editDataInLocalStorage(materiId, { judul, kategori, tahun });
+
+            // Setelah data diubah, Anda bisa mengarahkan pengguna kembali ke halaman "Manage Materi" atau halaman lainnya
+            window.location.href = "managemateri.html";
+        });
+
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function getDataFromLocalStorage(id) {
+            const data = JSON.parse(localStorage.getItem("dataMateri")) || [];
+            return data.find(item => item.id === id);
+        }
+
+        function editDataInLocalStorage(id, newData) {
+            const data = JSON.parse(localStorage.getItem("dataMateri")) || [];
+            const dataIndex = data.findIndex(item => item.id === id);
+            if (dataIndex !== -1) {
+                data[dataIndex] = { ...data[dataIndex], ...newData };
+                localStorage.setItem("dataMateri", JSON.stringify(data));
+            }
+        }
+    });
+</script>
+</body>
+</html>

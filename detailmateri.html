@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Materi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .navbar {
+            background-color: #007BFF; /* Warna latar belakang navbar */
+            transition: background-color 0.3s; /* Efek transisi pada latar belakang navbar */
+        }
+
+        .navbar .navbar-brand {
+            color: white; /* Warna teks navbar */
+            font-weight: bold;
+        }
+
+        .navbar .navbar-nav .nav-link {
+            color: white; /* Warna teks pada nav link */
+            transition: color 0.3s; /* Efek transisi warna teks pada nav link */
+        }
+
+        .navbar .navbar-nav .nav-link:hover {
+            color: #F8F9FA; /* Warna teks pada nav link saat dihover */
+        }
+
+        .navbar .navbar-toggler-icon {
+            background-color: white; /* Warna ikon tombol navbar */
+            transition: transform 0.2s; /* Efek transisi pada ikon tombol navbar */
+        }
+
+        .navbar .navbar-toggler:hover .navbar-toggler-icon {
+            transform: scale(1.2); /* Efek zoom out saat kursor dihover */
+        }
+
+
+        /* Tambahkan CSS ini untuk gaya rating bintang */
+        .star-rating {
+    display: inline-block;
+    font-size: 24px; /* Ubah ukuran font untuk membuat bintang lebih besar */
+    cursor: pointer;
+}
+
+.star-rating .star {
+    color: #ccc;
+    transition: color 0.3s;
+}
+
+.star-rating .star.active {
+    color: gold;
+    transition: color 0.3s;
+}
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light ">
+    <div class="container">
+        <a class="navbar-brand" href="#">Pusat Pembelajaran</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="kategori.html">Kategori</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="managemateri.html">Manage Materi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="faq.html">FAQ</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card">
+                <div class="card-body">
+                    <a href="kategori.html" class="btn btn-primary">Kembali</a>
+                    <h2 class="card-title mt-3" id="judul"></h2>
+                    <p class="card-text" id="deskripsi"></p>
+                    <div id="file-container"></div>
+                    <h2 class="card-title">Rating and Comment</h2>
+                    <form id="rating-form">
+                        <div class="form-group">
+                            <label for="rating">Rating:</label>
+                            <div class="star-rating">
+                                <span class="star" data-rating="1">★</span>
+                                <span class="star" data-rating="2">★</span>
+                                <span class="star" data-rating="3">★</span>
+                                <span class="star" data-rating="4">★</span>
+                                <span class="star" data-rating="5">★</span>
+                                <input type="hidden" name="rating" id="rating" value="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="comment">Comment:</label>
+                            <textarea class="form-control" id="comment" rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <a href="feedback.html" class="btn btn-primary">Feedback</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Ambil parameter ID dari URL (contoh: detailmateri.html?id=1)
+        const urlParams = new URLSearchParams(window.location.search);
+        const materiId = urlParams.get('id');
+        
+        // Ambil data materi berdasarkan ID dari Local Storage
+        const materi = getDataFromLocalStorage().find(item => item.id === parseInt(materiId));
+
+        // Tambahkan event listener untuk bintang rating
+    $(".star-rating .star").click(function() {
+        const rating = $(this).data("rating");
+        $("#rating").val(rating);
+        $(".star-rating .star").removeClass("active"); // Menghapus kelas 'active' dari semua bintang
+        $(".star-rating .star").each(function() {
+            if ($(this).data("rating") <= rating) {
+                $(this).addClass("active"); // Tambahkan kelas 'active' hanya pada bintang yang sesuai dengan rating
+            }
+        });
+    });
+        
+        // Tampilkan data materi pada halaman detail
+        if (materi) {
+            $("#judul").text(materi.judul);
+            $("#deskripsi").text(materi.kategori || "Deskripsi tidak tersedia.");
+            
+            // Tampilkan file yang diunggah
+            const fileContainer = $("#file-container");
+            if (materi.file) {
+                if (materi.file.endsWith(".jpg") || materi.file.endsWith(".jpeg") || materi.file.endsWith(".png")) {
+                    fileContainer.append(`<img src="fileGambar/${materi.file}" alt="Gambar Materi" class="img-fluid">`);
+                } else if (materi.file.endsWith(".mp4")) {
+                    // Ubah lebar dan tinggi video sesuai kebutuhan
+                    fileContainer.append(`<video controls width="100%" height="auto"><source src="filevideo/${materi.file}" type="video/mp4"></video>`);
+                } else if (materi.file.endsWith(".pdf")) {
+                    fileContainer.append(`<iframe src="filePDF/${materi.file}" width="100%" height="500px"></iframe>`);
+                } else if (materi.file.endsWith(".ppt") || materi.file.endsWith(".pptx")) {
+                    // Menggunakan Google Docs Viewer untuk menampilkan ppt/pptx
+                    const googleDocsUrl = `https://docs.google.com/viewer?url=${encodeURIComponent("filePPT/" + materi.file)}&embedded=true`;
+                    fileContainer.append(`<iframe src="${googleDocsUrl}" width="100%" height="500px"></iframe>`);
+                } else  {
+                    fileContainer.append(`<p>File tidak dapat ditampilkan.</p>`);
+                }
+            } else {
+                fileContainer.append(`<p>File tidak tersedia.</p>`);
+            }
+        }
+        // Tambahkan event listener untuk form rating
+        const ratingForm = $("#rating-form");
+        ratingForm.submit(function(event) {
+            event.preventDefault();
+
+            const selectedRating = $("#rating").val();
+            const comment = $("#comment").val();
+
+            const newRating = {
+                rating: selectedRating,
+                comment: comment
+            };
+
+            saveRating(newRating);
+
+            // Optional: Tampilkan pesan sukses
+            alert("Rating dan komentar tersimpan!");
+
+            // Optional: Reset form
+            ratingForm[0].reset();
+        });
+
+        function saveRating(rating) {
+            const existingRatings = getRatingsFromLocalStorage();
+            existingRatings.push(rating);
+            localStorage.setItem("ratings", JSON.stringify(existingRatings));
+        }
+
+        function getRatingsFromLocalStorage() {
+            const ratings = JSON.parse(localStorage.getItem("ratings")) || [];
+            return ratings;
+        }
+    });
+
+    
+
+    function getDataFromLocalStorage() {
+        const data = JSON.parse(localStorage.getItem("dataMateri")) || [];
+        return data.reverse();
+    }
+
+    
+</script>
+</body>
+</html>

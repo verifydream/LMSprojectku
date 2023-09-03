@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pusat Pembelajaran Digital</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .card {
+            position: relative;
+            overflow: hidden;
+        }
+    
+        .card .card-img-container {
+            position: relative;
+        }
+    
+        .card .card-img-top {
+            transition: transform 0.2s;
+        }
+    
+        .card:hover .card-img-top {
+            transform: scale(1.05);
+        }
+    
+        .card .card-title {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white; /* Ganti warna teks menjadi putih */
+            padding: 10px;
+            text-align: center;
+            opacity: 1;
+            font-weight: bold;
+            z-index: 1; /* Pastikan judul di atas gambar */
+            border: 2px solid black; /* Tambahkan border hitam di sekitar teks */
+            background-color: rgba(0, 0, 0, 0.5); /* Warna latar belakang teks dengan transparansi */
+        }
+    
+        .card-body {
+            text-align: center;
+        }
+
+        .navbar {
+            background-color: #007BFF; /* Warna latar belakang navbar */
+            transition: background-color 0.3s; /* Efek transisi pada latar belakang navbar */
+        }
+
+        .navbar .navbar-brand {
+            color: white; /* Warna teks navbar */
+            font-weight: bold;
+        }
+
+        .navbar .navbar-nav .nav-link {
+            color: white; /* Warna teks pada nav link */
+            transition: color 0.3s; /* Efek transisi warna teks pada nav link */
+        }
+
+        .navbar .navbar-nav .nav-link:hover {
+            color: #F8F9FA; /* Warna teks pada nav link saat dihover */
+        }
+
+        .navbar .navbar-toggler-icon {
+            background-color: white; /* Warna ikon tombol navbar */
+            transition: transform 0.2s; /* Efek transisi pada ikon tombol navbar */
+        }
+
+        .navbar .navbar-toggler:hover .navbar-toggler-icon {
+            transform: scale(1.2); /* Efek zoom out saat kursor dihover */
+        }
+
+        
+    </style>
+    
+    
+    
+    
+    
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">Pusat Pembelajaran</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="kategori.html">Kategori</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="managemateri.html">Manage Materi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQ</a>
+                    </li>
+                </ul>
+            <form class="form-inline ml-auto" id="search-form">
+                <input class="form-control mr-sm-2" type="search" placeholder="Cari materi" aria-label="Search" id="search-input">
+                <button class="btn btn-outline-primary my-2 my-sm-0" type="submit" style="background-color: #ffffff; border-color: #ffffff;">Cari</button>
+                <a href="https://wa.me/+6282290279052" target="_blank"><img src="help-icon.png" alt="Help Icon" style="width: 70px; height: 50px; "></a>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h2 class="mb-4">Materi Pembelajaran</h2>
+    <div class="row" id="materi-container">
+        <!-- Data materi akan ditampilkan di sini -->
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        const materiContainer = $("#materi-container");
+        const searchForm = $("#search-form");
+        const searchInput = $("#search-input");
+
+        function getDataFromLocalStorage() {
+            const data = JSON.parse(localStorage.getItem("dataMateri")) || [];
+            return data.reverse(); // Reverse the data array
+        }
+
+        const dummyMateri = getDataFromLocalStorage();
+
+        function renderMateri(data) {
+            materiContainer.empty();
+
+            data.forEach(function(materi) {
+                let imageSrc = "";
+                // Mengatur gambar berdasarkan kategori
+                switch (materi.kategori) {
+                    case "Impor":
+                        imageSrc = "gambarkategori/Impor.jpg";
+                        break;
+                    case "Ekspor":
+                        imageSrc = "gambarkategori/Ekspor.jpg";
+                        break;
+                    case "Cukai":
+                        imageSrc = "gambarkategori/Cukai.jpg";
+                        break;
+                    case "IMEI":
+                        imageSrc = "gambarkategori/IMEI.jpg";
+                        break;
+                    case "Lainnya":
+                        imageSrc = "gambarkategori/Lainnya.jpg";
+                        break;
+                    default:
+                        imageSrc = "gambarkategori/Lainnya.jpg";
+                }
+                materiContainer.append(`
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-img-container">
+                        <img src="${imageSrc}" class="card-img-top" alt="${materi.judul}">
+                        <h5 class="card-title">${materi.judul}</h5>
+                    </div>
+                    <div class="card-body">
+                    <p class="card-text">${materi.kategori}</p>
+                    <a href="detailmateri1.html" class="btn btn-primary">Selengkapnya</a>
+        </div>
+    </div>
+</div>
+
+                `);
+            });
+        }
+
+        renderMateri(dummyMateri);
+
+        searchForm.submit(function(event) {
+            event.preventDefault();
+            performSearch();
+        });
+
+        searchInput.keydown(function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                performSearch();
+            }
+        });
+
+        function performSearch() {
+            const keyword = searchInput.val().toLowerCase();
+            const filteredMateri = dummyMateri.filter(materi =>
+                materi.judul.toLowerCase().includes(keyword) || materi.kategori.toLowerCase().includes(keyword)
+            );
+            renderMateri(filteredMateri);
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Materi 2</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">Pusat Pembelajaran</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="kategori.html">Kategori</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="managemateri.html">Manage Materi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="faq.html">FAQ</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <div class="card">
+                <div class="card-body">
+                    <a href="kategori.html" class="btn btn-primary">Kembali</a>
+                    <h2 class="card-title mt-3">Materi 2</h2>
+                    <p class="card-text">Deskripsi singkat tentang Materi 2.</p>
+                    <embed src="sample.pdf" type="application/pdf" width="100%" height="500px" />
+                    <h2 class="card-title">Rating and Comment</h2>
+                    <form>
+                        <div class="form-group">
+                            <label for="rating">Rating:</label>
+                            <select class="form-control" id="rating">
+                                <option value="1">1 Star</option>
+                                <option value="2">2 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="5">5 Stars</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="comment">Comment:</label>
+                            <textarea class="form-control" id="comment" rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // Add event listener to the form submission
+    document.addEventListener("DOMContentLoaded", function() {
+        var ratingForm = document.querySelector("form");
+
+        if (ratingForm) {
+            ratingForm.addEventListener("submit", function(event) {
+                event.preventDefault(); // Prevent the form from submitting
+
+                // Get the rating and comment values
+                var rating = document.getElementById("rating").value;
+                var comment = document.getElementById("comment").value;
+
+                // Retrieve existing data (if any)
+                var existingData = localStorage.getItem("ratings");
+
+                // Parse the existing data from JSON format into an array
+                var ratings = existingData ? JSON.parse(existingData) : [];
+
+                // Create a new rating object
+                var newRating = {
+                    rating: rating,
+                    comment: comment
+                };
+
+                // Append the new rating to the array
+                ratings.push(newRating);
+
+                // Store the updated data in localStorage
+                localStorage.setItem("ratings", JSON.stringify(ratings));
+
+                // Optional: Display a success message to the user
+                alert("Rating and comment saved!");
+
+                // Optional: Clear the form fields
+                document.getElementById("rating").value = "";
+                document.getElementById("comment").value = "";
+            });
+
+            // Retrieve the saved ratings and comments from localStorage
+            var savedRatings = localStorage.getItem("ratings");
+
+            // Display the saved ratings and comments
+            if (savedRatings) {
+                var ratings = JSON.parse(savedRatings);
+                for (var i = 0; i < ratings.length; i++) {
+                    var rating = ratings[i];
+                    console.log("Rating: " + rating.rating + ", Comment: " + rating.comment);
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

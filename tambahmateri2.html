@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Head section... -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Materi</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Pusat Pembelajaran</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="kategori.html">Kategori</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="managemateri.html">Manage Materi</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq.html">FAQ</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+<!-- Navbar section... -->
+
+<div class="container mt-4">
+    <h2 class="mb-4">Tambah Materi</h2>
+    <a href="managemateri.html" class="btn btn-primary">Kembali</a>
+    <form id="tambahMateriForm">
+        <div class="form-group">
+            <label for="judul">Judul Materi</label>
+            <input type="text" class="form-control" id="judul" name="judul" required>
+        </div>
+        <div class="form-group">
+            <label for="kategori">Kategori</label>
+            <select class="form-control" id="kategori" name="kategori" required>
+                <option value="Umum">Umum</option>
+                <option value="Perbend">Perbend</option>
+                <option value="KIP">KIP</option>
+                <option value="PKCDT">PKCDT</option>
+                <option value="P2">P2</option>
+                <option value="A2">A2</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="tahun">Tahun</label>
+            <input type="date" class="form-control" id="tahun" name="tahun" required>
+        </div>
+        <div class="form-group">
+            <label for="file">File Materi</label>
+            <input type="file" class="form-control-file" id="file" name="file" accept=".jpg, .jpeg, .png, .mp4, .pdf, .ppt, .pptx" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Tambah Materi</button>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        const tambahMateriForm = $("#tambahMateriForm");
+
+        tambahMateriForm.submit(function(event) {
+            event.preventDefault();
+            const judul = $("#judul").val();
+            const kategori = $("#kategori").val();
+            const image = $("#image").val();
+            const tahun = $("#tahun").val();
+            const file = $("#file")[0].files[0];
+
+            // Generate a unique ID
+            const id = generateUniqueId();
+
+            const data = {
+                id: id, // Add the ID to the data object
+                judul: judul,
+                kategori: kategori,
+                image: image,
+                tahun: tahun,
+                file: file.name
+            };
+
+            // Simpan data di Local Storage
+            saveDataToLocalStorage(data);
+
+            // Setelah data ditambahkan, Anda bisa mengarahkan pengguna ke halaman "Manage Materi" atau halaman lainnya
+            window.location.href = "managemateri.html";
+        });
+
+        function generateUniqueId() {
+            // Get the last ID from Local Storage (if any)
+            const lastId = localStorage.getItem("lastId") || 0;
+            
+            // Increment the ID
+            const newId = parseInt(lastId) + 1;
+            
+            // Update the last ID in Local Storage
+            localStorage.setItem("lastId", newId);
+
+            return newId;
+        }
+
+        function saveDataToLocalStorage(data) {
+            // Ambil data dari Local Storage (jika ada)
+            const existingData = JSON.parse(localStorage.getItem("dataMateri")) || [];
+            
+            // Tambahkan data baru
+            existingData.push(data);
+            
+            // Simpan data ke Local Storage
+            localStorage.setItem("dataMateri", JSON.stringify(existingData));
+        }
+    });
+</script>
+
+</body>
+</html>

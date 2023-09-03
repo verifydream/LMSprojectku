@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan FAQ</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .navbar {
+            background-color: #007BFF; /* Warna latar belakang navbar */
+            transition: background-color 0.3s; /* Efek transisi pada latar belakang navbar */
+        }
+
+        .navbar .navbar-brand {
+            color: white; /* Warna teks navbar */
+            font-weight: bold;
+        }
+
+        .navbar .navbar-nav .nav-link {
+            color: white; /* Warna teks pada nav link */
+            transition: color 0.3s; /* Efek transisi warna teks pada nav link */
+        }
+
+        .navbar .navbar-nav .nav-link:hover {
+            color: #F8F9FA; /* Warna teks pada nav link saat dihover */
+        }
+
+        .navbar .navbar-toggler-icon {
+            background-color: white; /* Warna ikon tombol navbar */
+            transition: transform 0.2s; /* Efek transisi pada ikon tombol navbar */
+        }
+
+        .navbar .navbar-toggler:hover .navbar-toggler-icon {
+            transform: scale(1.2); /* Efek zoom out saat kursor dihover */
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="#">Pusat Pembelajaran</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="home.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="kategori.html">Kategori</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="managemateri.html">Manage Materi</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="faq.html">FAQ</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <a href="faq.html" class="btn btn-primary">Kembali</a>
+    <h2 class="mb-4">Pengaturan FAQ</h2>
+    <form id="faq-form">
+        <div class="form-row mb-3">
+            <div class="col-md-6">
+                <label for="pertanyaan">Pertanyaan</label>
+                <input type="text" class="form-control" id="pertanyaan" placeholder="Masukkan pertanyaan">
+            </div>
+            <div class="col-md-6">
+                <label for="jawaban">Jawaban</label>
+                <input type="text" class="form-control" id="jawaban" placeholder="Masukkan jawaban">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Tambah Pertanyaan</button>
+    </form>
+
+    <h2 class="mt-4">Daftar Pertanyaan</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Pertanyaan</th>
+                <th scope="col">Jawaban</th>
+                <th scope="col">Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="faq-list">
+            <!-- Data FAQ akan ditampilkan di sini -->
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+     $(document).ready(function() {
+        const faqForm = $("#faq-form");
+        const pertanyaanInput = $("#pertanyaan");
+        const jawabanInput = $("#jawaban");
+        const faqList = $("#faq-list");
+
+        let faqCounter = 0; // Counter akan diisi ulang dari data yang ada di cache
+        let cachedFAQs = [];
+
+        // Cek apakah data tersimpan di cache
+        const cachedData = localStorage.getItem("cachedFAQs");
+        if (cachedData) {
+            cachedFAQs = JSON.parse(cachedData);
+            renderCachedFAQs();
+        }
+
+        // Update faqCounter berdasarkan data yang ada di cache
+        if (cachedFAQs.length > 0) {
+            faqCounter = cachedFAQs[cachedFAQs.length - 1].id;
+        }
+
+        faqForm.submit(function(event) {
+    event.preventDefault();
+    const pertanyaan = pertanyaanInput.val();
+    const jawaban = jawabanInput.val();
+    if (pertanyaan && jawaban) {
+        const newFAQ = { id: cachedFAQs.length + 1, pertanyaan, jawaban };
+        cachedFAQs.push(newFAQ);
+        updateCachedData();
+        addFAQ(newFAQ);
+        pertanyaanInput.val("");
+        jawabanInput.val("");
+    }
+    });
+
+        function addFAQ(faq) {
+            const faqItem = `
+                <tr>
+                    <th scope="row">${faq.id}</th>
+                    <td>${faq.pertanyaan}</td>
+                    <td>${faq.jawaban}</td>
+                    <td>
+                        <button class="btn btn-link btn-edit" data-id="${faq.id}">Edit</button>
+                        <button class="btn btn-link btn-delete" data-id="${faq.id}">Hapus</button>
+                    </td>
+                </tr>
+            `;
+            faqList.append(faqItem);
+            attachEventListeners(faq.id);
+        }
+
+        function renderCachedFAQs() {
+            cachedFAQs.forEach(function(faq) {
+                addFAQ(faq);
+            });
+        }
+
+        function updateCachedData() {
+            localStorage.setItem("cachedFAQs", JSON.stringify(cachedFAQs));
+        }
+
+        function attachEventListeners(id) {
+            const editButton = $(`.btn-edit[data-id="${id}"]`);
+            const deleteButton = $(`.btn-delete[data-id="${id}"]`);
+
+            editButton.click(function() {
+                const faq = cachedFAQs.find(f => f.id === id);
+                if (faq) {
+                    pertanyaanInput.val(faq.pertanyaan);
+                    jawabanInput.val(faq.jawaban);
+                    removeFAQ(id);
+                }
+            });
+
+            deleteButton.click(function() {
+                removeFAQ(id);
+            });
+        }
+
+        function removeFAQ(id) {
+            cachedFAQs = cachedFAQs.filter(f => f.id !== id);
+            updateCachedData();
+            $(`.btn-edit[data-id="${id}"]`).closest("tr").remove();
+        }
+
+    });
+</script>
+</body>
+</html>
