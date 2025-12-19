@@ -147,7 +147,8 @@ class MaterialResource extends Resource
                     ->label('Views')
                     ->sortable()
                     ->badge()
-                    ->color('info'),
+                    ->color('info')
+                    ->formatStateUsing(fn ($state) => (string) $state),
                     
                 Tables\Columns\IconColumn::make('is_active')
                     ->label('Status')
@@ -156,7 +157,7 @@ class MaterialResource extends Resource
                     
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
-                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => $state ? $state->format('Y-m-d H:i:s') : '')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])

@@ -78,11 +78,12 @@ class FaqResource extends Resource
                     
                 Tables\Columns\TextColumn::make('order')
                     ->label('Urutan')
-                    ->sortable(),
+                    ->sortable()
+                    ->formatStateUsing(fn ($state) => (string) $state),
                     
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Dibuat')
-                    ->dateTime()
+                    ->formatStateUsing(fn ($state) => $state ? $state->format('Y-m-d H:i:s') : '')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
