@@ -4,7 +4,7 @@
 
 @section('content')
 <div x-data="faq()" class="max-w-5xl mx-auto">
-    <h1 class="text-4xl font-bold mb-8 text-gray-800">Frequently Asked Questions (FAQ)</h1>
+    <h1 class="text-4xl font-bold mb-8 text-gray-800 dark:text-gray-100">Frequently Asked Questions (FAQ)</h1>
 
     <!-- Search Bar -->
     <div class="mb-8">
@@ -15,7 +15,7 @@
                     name="search" 
                     value="{{ request('search') }}"
                     placeholder="Cari pertanyaan..." 
-                    class="flex-1 px-6 py-3 rounded-l-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="flex-1 px-6 py-3 rounded-l-lg border-2 border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                 <button type="submit" class="bg-primary text-white px-6 py-3 rounded-r-lg hover:bg-blue-700 transition-colors font-semibold">
                     Cari
@@ -28,14 +28,14 @@
     <!-- FAQ List -->
     <div class="space-y-4">
         @foreach($faqs as $faq)
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden border border-transparent dark:border-gray-700">
             <button 
                 @click="toggleFaq({{ $faq->id }})"
-                class="w-full text-left px-6 py-4 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
+                class="w-full text-left px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-gray-800 pr-4">{{ $faq->question }}</h3>
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-100 pr-4">{{ $faq->question }}</h3>
                     <svg 
-                        class="w-6 h-6 text-gray-600 transition-transform duration-200"
+                        class="w-6 h-6 text-gray-600 dark:text-gray-400 transition-transform duration-200"
                         :class="{ 'rotate-180': openFaqs.includes({{ $faq->id }}) }"
                         fill="none" 
                         stroke="currentColor" 
@@ -54,8 +54,8 @@
                 x-transition:leave-end="opacity-0 transform -translate-y-2"
                 class="px-6 pb-6"
                 style="display: none;">
-                <div class="border-t border-gray-200 pt-4">
-                    <div class="prose prose-blue max-w-none text-gray-700">
+                <div class="border-t border-gray-200 dark:border-gray-700 pt-4">
+                    <div class="prose prose-blue dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
                         {!! $faq->answer !!}
                     </div>
                 </div>
@@ -64,12 +64,12 @@
         @endforeach
     </div>
     @else
-    <div class="bg-white rounded-lg shadow-md p-12 text-center">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-12 text-center border dark:border-gray-700">
         <svg class="w-24 h-24 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
-        <h3 class="text-2xl font-bold text-gray-800 mb-2">Tidak ada FAQ ditemukan</h3>
-        <p class="text-gray-600 mb-4">Coba kata kunci lain</p>
+        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">Tidak ada FAQ ditemukan</h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-4">Coba kata kunci lain</p>
         <a href="{{ route('faq.index') }}" class="inline-block bg-primary text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold">
             Lihat Semua FAQ
         </a>

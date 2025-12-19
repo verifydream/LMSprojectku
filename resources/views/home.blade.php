@@ -22,9 +22,9 @@
                     name="search" 
                     value="{{ request('search') }}"
                     placeholder="Cari materi pembelajaran..." 
-                    class="flex-1 px-6 py-4 rounded-l-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
+                    class="flex-1 px-6 py-4 rounded-l-lg border-2 border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-lg"
                 >
-                <button type="submit" class="bg-primary text-white px-8 py-4 rounded-r-lg hover:bg-blue-700 transition-colors font-semibold text-lg">
+                <button type="submit" class="bg-primary text-white px-8 py-4 rounded-r-lg hover:bg-blue-700 transition-colors font-semibold text-lg flex items-center justify-center">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
@@ -35,11 +35,11 @@
 
     <!-- Categories Quick Links -->
     <div class="mb-12">
-        <h2 class="text-3xl font-bold mb-6 text-gray-800">Kategori Pembelajaran</h2>
+        <h2 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-100">Kategori Pembelajaran</h2>
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             @foreach($categories as $category)
             <a href="{{ route('materials.index', ['category' => $category->slug]) }}" 
-               class="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow p-6 text-center group">
+               class="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-all p-6 text-center group border border-transparent dark:border-gray-700">
                 @if($category->image_url)
                 <img src="{{ asset('storage/' . $category->image_url) }}" 
                      alt="{{ $category->name }}" 
@@ -49,8 +49,8 @@
                     {{ substr($category->name, 0, 1) }}
                 </div>
                 @endif
-                <h3 class="font-semibold text-gray-800 group-hover:text-primary transition-colors">{{ $category->name }}</h3>
-                <p class="text-sm text-gray-500 mt-1">{{ $category->materials_count ?? 0 }} materi</p>
+                <h3 class="font-semibold text-gray-800 dark:text-gray-200 group-hover:text-primary transition-colors">{{ $category->name }}</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ $category->materials_count ?? 0 }} materi</p>
             </a>
             @endforeach
         </div>
@@ -59,9 +59,9 @@
     <!-- Materials Grid -->
     <div class="mb-8">
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-3xl font-bold text-gray-800">Materi Terbaru</h2>
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">Materi Terbaru</h2>
             @if(request('search'))
-            <a href="{{ route('home') }}" class="text-blue-600 hover:text-blue-800 font-semibold">
+            <a href="{{ route('home') }}" class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-semibold">
                 Reset Pencarian
             </a>
             @endif
@@ -137,34 +137,34 @@
 
     <!-- Info Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-        <div class="bg-white rounded-lg shadow-md p-6 text-center">
-            <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center border dark:border-gray-700">
+            <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
                 </svg>
             </div>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Materi Lengkap</h3>
-            <p class="text-gray-600">Akses materi pembelajaran yang komprehensif dan mudah dipahami</p>
+            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Materi Lengkap</h3>
+            <p class="text-gray-600 dark:text-gray-400">Akses materi pembelajaran yang komprehensif dan mudah dipahami</p>
         </div>
         
-        <div class="bg-white rounded-lg shadow-md p-6 text-center">
-            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center border dark:border-gray-700">
+            <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
             </div>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Gratis & Mudah</h3>
-            <p class="text-gray-600">Akses gratis ke semua materi tanpa biaya pendaftaran</p>
+            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Gratis & Mudah</h3>
+            <p class="text-gray-600 dark:text-gray-400">Akses gratis ke semua materi tanpa biaya pendaftaran</p>
         </div>
         
-        <div class="bg-white rounded-lg shadow-md p-6 text-center">
-            <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 text-center border dark:border-gray-700">
+            <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg class="w-8 h-8 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
             </div>
-            <h3 class="text-xl font-bold text-gray-800 mb-2">Update Berkala</h3>
-            <p class="text-gray-600">Materi selalu diperbarui mengikuti perkembangan terbaru</p>
+            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Update Berkala</h3>
+            <p class="text-gray-600 dark:text-gray-400">Materi selalu diperbarui mengikuti perkembangan terbaru</p>
         </div>
     </div>
 </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" x-data="{ darkMode: localStorage.getItem('darkMode') === 'true' }" :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,9 +9,9 @@
         [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="bg-gray-50" x-data="{ mobileMenuOpen: false }">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300" x-data="{ mobileMenuOpen: false }">
     <!-- Navigation -->
-    <nav class="bg-primary shadow-lg transition-all duration-300">
+    <nav class="bg-primary dark:bg-gray-800 shadow-lg transition-all duration-300 border-b border-primary dark:border-gray-700">
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center py-4">
                 <div class="flex items-center space-x-4">
@@ -57,20 +57,33 @@
                     </a>
                 </div>
 
-                <!-- Mobile menu button -->
-                <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-white">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
+                <!-- Right Side Actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- Dark Mode Toggle -->
+                    <button @click="darkMode = !darkMode; localStorage.setItem('darkMode', darkMode)" class="p-2 rounded-lg text-white hover:bg-white/10 transition-colors">
+                        <svg x-show="!darkMode" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                        <svg x-show="darkMode" x-cloak class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 9H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Mobile menu button -->
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" class="md:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             <!-- Mobile Menu -->
             <div x-show="mobileMenuOpen" x-cloak class="md:hidden pb-4">
-                <a href="{{ route('home') }}" class="block text-white py-2 hover:bg-blue-600 px-4 rounded">Home</a>
-                <a href="{{ route('materials.index') }}" class="block text-white py-2 hover:bg-blue-600 px-4 rounded">Kategori</a>
-                <a href="{{ route('faq.index') }}" class="block text-white py-2 hover:bg-blue-600 px-4 rounded">FAQ</a>
-                <a href="/admin" class="block text-white py-2 hover:bg-blue-600 px-4 rounded">Admin Panel</a>
+                <a href="{{ route('home') }}" class="block text-white py-2 hover:bg-white/10 px-4 rounded transition-colors">Home</a>
+                <a href="{{ route('materials.index') }}" class="block text-white py-2 hover:bg-white/10 px-4 rounded transition-colors">Kategori</a>
+                <a href="{{ route('faq.index') }}" class="block text-white py-2 hover:bg-white/10 px-4 rounded transition-colors">FAQ</a>
+                <a href="/admin" class="block text-white py-2 hover:bg-white/10 px-4 rounded transition-colors">Admin Panel</a>
             </div>
         </div>
     </nav>
@@ -81,28 +94,28 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white mt-16">
+    <footer class="bg-gray-800 dark:bg-black text-white mt-16 transition-colors duration-300">
         <div class="container mx-auto px-4 py-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
                     <h3 class="font-bold text-lg mb-4">Pusat Pembelajaran Digital</h3>
-                    <p class="text-gray-300">Platform pembelajaran digital untuk materi kepabeanan dan bea cukai Indonesia.</p>
+                    <p class="text-gray-300 dark:text-gray-400">Platform pembelajaran digital untuk materi kepabeanan dan bea cukai Indonesia.</p>
                 </div>
                 <div>
                     <h3 class="font-bold text-lg mb-4">Menu</h3>
                     <ul class="space-y-2">
-                        <li><a href="{{ route('home') }}" class="text-gray-300 hover:text-white">Home</a></li>
-                        <li><a href="{{ route('materials.index') }}" class="text-gray-300 hover:text-white">Kategori</a></li>
-                        <li><a href="{{ route('faq.index') }}" class="text-gray-300 hover:text-white">FAQ</a></li>
-                        <li><a href="/admin" class="text-gray-300 hover:text-white">Admin Panel</a></li>
+                        <li><a href="{{ route('home') }}" class="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">Home</a></li>
+                        <li><a href="{{ route('materials.index') }}" class="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">Kategori</a></li>
+                        <li><a href="{{ route('faq.index') }}" class="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+                        <li><a href="/admin" class="text-gray-300 dark:text-gray-400 hover:text-white transition-colors">Admin Panel</a></li>
                     </ul>
                 </div>
                 <div>
                     <h3 class="font-bold text-lg mb-4">Kontak</h3>
-                    <p class="text-gray-300">WhatsApp: +62 822 9027 9052</p>
+                    <p class="text-gray-300 dark:text-gray-400">WhatsApp: +62 822 9027 9052</p>
                 </div>
             </div>
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+            <div class="border-t border-gray-700 dark:border-gray-800 mt-8 pt-8 text-center text-gray-400">
                 <p>&copy; {{ date('Y') }} LMS Pusat Pembelajaran Digital. All rights reserved.</p>
             </div>
         </div>

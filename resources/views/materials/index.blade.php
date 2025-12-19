@@ -10,12 +10,12 @@
     <div class="mb-8 overflow-x-auto">
         <div class="flex space-x-3 pb-4">
             <a href="{{ route('materials.index') }}" 
-               class="px-6 py-3 rounded-full font-semibold whitespace-nowrap transition-colors {{ !request('category') || request('category') == 'all' ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-100' }}">
+               class="px-6 py-3 rounded-full font-semibold whitespace-nowrap transition-colors {{ !request('category') || request('category') == 'all' ? 'bg-primary text-white' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-transparent dark:border-gray-700' }}">
                 Semua
             </a>
             @foreach($categories as $category)
             <a href="{{ route('materials.index', ['category' => $category->slug]) }}" 
-               class="px-6 py-3 rounded-full font-semibold whitespace-nowrap transition-colors {{ request('category') == $category->slug ? 'bg-primary text-white' : 'bg-white text-gray-700 hover:bg-gray-100' }}">
+               class="px-6 py-3 rounded-full font-semibold whitespace-nowrap transition-colors {{ request('category') == $category->slug ? 'bg-primary text-white' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 border border-transparent dark:border-gray-700' }}">
                 {{ $category->name }}
             </a>
             @endforeach
@@ -34,9 +34,9 @@
                     name="search" 
                     value="{{ request('search') }}"
                     placeholder="Cari materi..." 
-                    class="flex-1 px-6 py-3 rounded-l-lg border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="flex-1 px-6 py-3 rounded-l-lg border-2 border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                <button type="submit" class="bg-primary text-white px-6 py-3 rounded-r-lg hover:bg-blue-700 transition-colors font-semibold">
+                <button type="submit" class="bg-primary text-white px-6 py-3 rounded-r-lg hover:bg-blue-700 transition-colors font-semibold flex items-center">
                     Cari
                 </button>
             </div>
